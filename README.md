@@ -59,8 +59,6 @@
 
 - `game.baseball.application`
     - `BaseballGameService` : 게임 시작 및 추측 처리(유즈케이스)
-    - `GuessCommandParser` : 숫자 입력 커맨드 파싱
-    - `RestartCommandParser` : 재시작/종료 커맨드 파싱
 
 - `game.baseball.application.port`
     - `in` : `BaseballGameUseCase`, `command(GuessCommand, RestartCommand)`
