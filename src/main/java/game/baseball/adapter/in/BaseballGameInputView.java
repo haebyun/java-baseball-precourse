@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BaseballGameInputView implements GameInputPort {
+    private static final int GUESS_LENGTH = 3;
+    private static final char DIGIT_ZERO = '0';
+    private static final String RESTART_COMMAND = "1";
+    private static final String QUIT_COMMAND = "2";
+
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
@@ -39,8 +44,10 @@ public class BaseballGameInputView implements GameInputPort {
     }
 
     private void validateLength(String input) {
-        if (input.length() != 3) {
-            throw new IllegalArgumentException("세 자리 숫자를 입력해야 합니다.");
+        if (input.length() != GUESS_LENGTH) {
+            throw new IllegalArgumentException(
+                    String.format("%d자리 숫자를 입력해야 합니다.", GUESS_LENGTH)
+            );
         }
     }
 
@@ -56,17 +63,19 @@ public class BaseballGameInputView implements GameInputPort {
         if (!Character.isDigit(ch)) {
             throw new IllegalArgumentException("숫자만 입력할 수 있습니다.");
         }
-        return ch - '0';
+        return ch - DIGIT_ZERO;
     }
 
     private boolean parseRestart(String command) {
         String normalized = normalize(command);
-        if ("1".equals(normalized)) {
+        if (RESTART_COMMAND.equals(normalized)) {
             return true;
         }
-        if ("2".equals(normalized)) {
+        if (QUIT_COMMAND.equals(normalized)) {
             return false;
         }
-        throw new IllegalArgumentException("1 또는 2를 입력해야 합니다.");
+        throw new IllegalArgumentException(
+                String.format("%s 또는 %s를 입력해야 합니다.", RESTART_COMMAND, QUIT_COMMAND)
+        );
     }
 }

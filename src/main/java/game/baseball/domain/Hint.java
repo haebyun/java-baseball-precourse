@@ -1,6 +1,10 @@
 package game.baseball.domain;
 
 public class Hint {
+    private static final int MIN_COUNT = 0;
+    private static final int MAX_COUNT = 3;
+    private static final int SOLVED_STRIKE_COUNT = 3;
+
     private final int strike;
     private final int ball;
 
@@ -15,7 +19,7 @@ public class Hint {
     }
 
     public boolean isSolved() {
-        return strike == 3;
+        return strike == SOLVED_STRIKE_COUNT;
     }
 
     public String message() {
@@ -26,7 +30,7 @@ public class Hint {
     }
 
     private boolean isNothing() {
-        return strike == 0 && ball == 0;
+        return strike == MIN_COUNT && ball == MIN_COUNT;
     }
 
     private String buildMessage() {
@@ -37,14 +41,14 @@ public class Hint {
     }
 
     private void appendStrike(StringBuilder sb) {
-        if (strike == 0) {
+        if (strike == MIN_COUNT) {
             return;
         }
         sb.append(strike).append("스트라이크");
     }
 
     private void appendBall(StringBuilder sb) {
-        if (ball == 0) {
+        if (ball == MIN_COUNT) {
             return;
         }
         if (!sb.isEmpty()) {
@@ -54,14 +58,20 @@ public class Hint {
     }
 
     private static void validate(int strike, int ball) {
-        if (strike < 0 || strike > 3) {
-            throw new IllegalArgumentException("스트라이크는 0~3 범위여야 합니다.");
+        if (strike < MIN_COUNT || strike > MAX_COUNT) {
+            throw new IllegalArgumentException(
+                    String.format("스트라이크는 %d~%d 범위여야 합니다.", MIN_COUNT, MAX_COUNT)
+            );
         }
-        if (ball < 0 || ball > 3) {
-            throw new IllegalArgumentException("볼은 0~3 범위여야 합니다.");
+        if (ball < MIN_COUNT || ball > MAX_COUNT) {
+            throw new IllegalArgumentException(
+                    String.format("볼은 %d~%d 범위여야 합니다.", MIN_COUNT, MAX_COUNT)
+            );
         }
-        if (strike + ball > 3) {
-            throw new IllegalArgumentException("스트라이크와 볼의 합은 3을 초과할 수 없습니다.");
+        if (strike + ball > MAX_COUNT) {
+            throw new IllegalArgumentException(
+                    String.format("스트라이크와 볼의 합은 %d을 초과할 수 없습니다.", MAX_COUNT)
+            );
         }
     }
 }
