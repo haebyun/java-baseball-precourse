@@ -1,7 +1,6 @@
 package game.baseball.adapter.in;
 
 import game.GamingConsole;
-import game.baseball.application.RestartCommandParser;
 import game.baseball.application.port.in.BaseballGameUseCase;
 import game.baseball.application.port.in.command.GuessCommand;
 import game.baseball.application.port.in.command.RestartCommand;
@@ -13,18 +12,15 @@ public class BaseballGameController implements GamingConsole {
     private final BaseballGameUseCase useCase;
     private final GameInputPort inputPort;
     private final GameOutputPort outputPort;
-    private final RestartCommandParser restartCommandParser;
 
     public BaseballGameController(
             BaseballGameUseCase useCase,
             GameInputPort inputPort,
-            GameOutputPort outputPort,
-            RestartCommandParser restartCommandParser
+            GameOutputPort outputPort
     ) {
         this.useCase = useCase;
         this.inputPort = inputPort;
         this.outputPort = outputPort;
-        this.restartCommandParser = restartCommandParser;
     }
 
     @Override
@@ -82,7 +78,7 @@ public class BaseballGameController implements GamingConsole {
         try {
             outputPort.showRestartPrompt();
             RestartCommand command = inputPort.readRestartCommand();
-            return restartCommandParser.parse(command);
+            return command.restart();
         } catch (IllegalArgumentException e) {
             outputPort.showError(e.getMessage());
             return null;

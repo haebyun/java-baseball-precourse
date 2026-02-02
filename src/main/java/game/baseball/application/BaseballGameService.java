@@ -9,13 +9,10 @@ import game.baseball.domain.Hint;
 
 public class BaseballGameService implements BaseballGameUseCase {
     private final NumberGeneratorPort numberGeneratorPort;
-    private final GuessCommandParser guessCommandParser;
     private BaseballGame game;
 
-    public BaseballGameService(NumberGeneratorPort numberGeneratorPort,
-                               GuessCommandParser guessCommandParser) {
+    public BaseballGameService(NumberGeneratorPort numberGeneratorPort) {
         this.numberGeneratorPort = numberGeneratorPort;
-        this.guessCommandParser = guessCommandParser;
     }
 
     @Override
@@ -27,7 +24,7 @@ public class BaseballGameService implements BaseballGameUseCase {
     @Override
     public Hint guess(GuessCommand command) {
         ensureGameStarted();
-        BaseballNumbers guess = guessCommandParser.parse(command);
+        BaseballNumbers guess = BaseballNumbers.from(command.digits());
         return game.guess(guess);
     }
 
