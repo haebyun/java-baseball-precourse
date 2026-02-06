@@ -1,9 +1,11 @@
 package game.baseball.domain;
 
+import game.baseball.BaseballGameRules;
+
 public class Hint {
     private static final int MIN_COUNT = 0;
-    private static final int MAX_COUNT = 3;
-    private static final int SOLVED_STRIKE_COUNT = 3;
+    private static final int MAX_COUNT = BaseballGameRules.NUMBER_COUNT;
+    private static final int SOLVED_STRIKE_COUNT = BaseballGameRules.NUMBER_COUNT;
 
     private final int strike;
     private final int ball;

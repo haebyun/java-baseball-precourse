@@ -1,13 +1,13 @@
 package game.baseball.domain;
 
+import game.baseball.BaseballGameRules;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class BaseballNumbers {
-    private static final int NUMBERS_SIZE = 3;
-
     private final List<BaseballNumber> numbers;
 
     private BaseballNumbers(List<BaseballNumber> numbers) {
@@ -32,9 +32,9 @@ public class BaseballNumbers {
     }
 
     private static void validateSize(final List<Integer> numbers) {
-        if (numbers.size() != NUMBERS_SIZE) {
+        if (numbers.size() != BaseballGameRules.NUMBER_COUNT) {
             throw new IllegalArgumentException(
-                    String.format("숫자야구의 숫자 개수는 %d개입니다.", NUMBERS_SIZE)
+                    String.format("숫자야구의 숫자 개수는 %d개입니다.", BaseballGameRules.NUMBER_COUNT)
             );
         }
     }

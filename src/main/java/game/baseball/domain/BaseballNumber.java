@@ -1,9 +1,8 @@
 package game.baseball.domain;
 
-public class BaseballNumber {
-    private static final int MIN_NUMBER = 1;
-    private static final int MAX_NUMBER = 9;
+import game.baseball.BaseballGameRules;
 
+public class BaseballNumber {
     private final Integer number;
 
     private BaseballNumber(Integer number) {
@@ -16,9 +15,13 @@ public class BaseballNumber {
     }
 
     private static void validate(final Integer number) {
-        if (number < MIN_NUMBER || number > MAX_NUMBER) {
+        if (number < BaseballGameRules.MIN_NUMBER || number > BaseballGameRules.MAX_NUMBER) {
             throw new IllegalArgumentException(
-                    String.format("야구 숫자의 범위는 %d에서 %d까지의 자연수 입니다.", MIN_NUMBER, MAX_NUMBER)
+                    String.format(
+                            "야구 숫자의 범위는 %d에서 %d까지의 자연수 입니다.",
+                            BaseballGameRules.MIN_NUMBER,
+                            BaseballGameRules.MAX_NUMBER
+                    )
             );
         }
     }

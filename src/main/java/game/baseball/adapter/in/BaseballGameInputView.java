@@ -1,5 +1,6 @@
 package game.baseball.adapter.in;
 
+import game.baseball.BaseballGameRules;
 import game.baseball.application.port.out.GameInputPort;
 import game.baseball.application.port.in.command.GuessCommand;
 import game.baseball.application.port.in.command.RestartCommand;
@@ -9,10 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BaseballGameInputView implements GameInputPort {
-    private static final int GUESS_LENGTH = 3;
     private static final char DIGIT_ZERO = '0';
-    private static final String RESTART_COMMAND = "1";
-    private static final String QUIT_COMMAND = "2";
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -44,9 +42,9 @@ public class BaseballGameInputView implements GameInputPort {
     }
 
     private void validateLength(String input) {
-        if (input.length() != GUESS_LENGTH) {
+        if (input.length() != BaseballGameRules.NUMBER_COUNT) {
             throw new IllegalArgumentException(
-                    String.format("%d자리 숫자를 입력해야 합니다.", GUESS_LENGTH)
+                    String.format("%d자리 숫자를 입력해야 합니다.", BaseballGameRules.NUMBER_COUNT)
             );
         }
     }
@@ -68,14 +66,18 @@ public class BaseballGameInputView implements GameInputPort {
 
     private boolean parseRestart(String command) {
         String normalized = normalize(command);
-        if (RESTART_COMMAND.equals(normalized)) {
+        if (BaseballGameRules.RESTART_COMMAND.equals(normalized)) {
             return true;
         }
-        if (QUIT_COMMAND.equals(normalized)) {
+        if (BaseballGameRules.QUIT_COMMAND.equals(normalized)) {
             return false;
         }
         throw new IllegalArgumentException(
-                String.format("%s 또는 %s를 입력해야 합니다.", RESTART_COMMAND, QUIT_COMMAND)
+                String.format(
+                        "%s 또는 %s를 입력해야 합니다.",
+                        BaseballGameRules.RESTART_COMMAND,
+                        BaseballGameRules.QUIT_COMMAND
+                )
         );
     }
 }
