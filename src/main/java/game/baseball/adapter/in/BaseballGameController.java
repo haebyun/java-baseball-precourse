@@ -2,11 +2,11 @@ package game.baseball.adapter.in;
 
 import game.GamingConsole;
 import game.baseball.application.port.in.BaseballGameUseCase;
-import game.baseball.application.port.in.command.GuessCommand;
-import game.baseball.application.port.in.command.RestartCommand;
 import game.baseball.application.port.out.GameInputPort;
 import game.baseball.application.port.out.GameOutputPort;
 import game.baseball.domain.Hint;
+
+import java.util.function.Supplier;
 
 public class BaseballGameController implements GamingConsole {
     private final BaseballGameUseCase useCase;
@@ -46,42 +46,26 @@ public class BaseballGameController implements GamingConsole {
     }
 
     private Hint readValidHint() {
-        while (true) {
-            Hint hint = tryGuessOnce();
-            if (hint != null) {
-                return hint;
-            }
-        }
-    }
-
-    private Hint tryGuessOnce() {
-        try {
+        return readUntilValid(() -> {
             outputPort.showGuessPrompt();
-            GuessCommand command = inputPort.readGuessCommand();
-            return useCase.guess(command);
-        } catch (IllegalArgumentException e) {
-            outputPort.showError(e.getMessage());
-            return null;
-        }
+            return useCase.guess(inputPort.readGuessCommand());
+        });
     }
 
     private boolean restartSelected() {
-        while (true) {
-            Boolean restart = tryReadRestartCommand();
-            if (restart != null) {
-                return restart;
-            }
-        }
+        return readUntilValid(() -> {
+            outputPort.showRestartPrompt();
+            return inputPort.readRestartCommand().restart();
+        });
     }
 
-    private Boolean tryReadRestartCommand() {
-        try {
-            outputPort.showRestartPrompt();
-            RestartCommand command = inputPort.readRestartCommand();
-            return command.restart();
-        } catch (IllegalArgumentException e) {
-            outputPort.showError(e.getMessage());
-            return null;
+    private <T> T readUntilValid(Supplier<T> reader) {
+        while (true) {
+            try {
+                return reader.get();
+            } catch (IllegalArgumentException e) {
+                outputPort.showError(e.getMessage());
+            }
         }
     }
 }
